@@ -19,14 +19,26 @@ class Author(models.Model):
 
 
 class Publish(models.Model):
-    author_seq = models.ForeignKey(Author)
-    book_seq = models.ForeignKey(Book)
+    author_id = models.ForeignKey(Author,on_delete=models.CASCADE)
+    book_id = models.ForeignKey(Book,on_delete=models.CASCADE)
 
 
 class AddBook(models.Model):
-    book_seq = models.ForeignKey(Book)
-    manager_seq = models.ForeignKey(Manager)
+    book_id = models.ForeignKey(Book,on_delete=models.CASCADE)
+    manager_id = models.ForeignKey(Manager,on_delete=models.CASCADE)
 
 class BookMark(models.Model):
-    user_seq = models.ForeignKey(User)
-    book_seq = models.ForeignKey(Book)
+    user_id = models.ForeignKey(User,on_delete=models.CASCADE)
+    book_id = models.ForeignKey(Book,on_delete=models.CASCADE)
+
+class Review(models.Model):
+    writer = models.CharField(max_length=20)
+    title = models.CharField(max_length=50)
+    rate = models.FloatField()
+    date = models.DateField()
+    book_id = models.ForeignKey(Book,on_delete=models.CASCADE)
+
+class WriteReview(models.Model):
+    user_id = models.ForeignKey(User,on_delete=models.CASCADE)
+    book_id = models.ForeignKey(Book,on_delete=models.CASCADE)
+    review_id = models.ForeignKey(Review,on_delete=models.CASCADE)

@@ -80,8 +80,12 @@ WSGI_APPLICATION = 'mini_library.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE':'django.db.backends.postgresql',
+        "NAME": "ddok",
+        "USER": "ddok",
+        "PASSWORD":"1234",
+        "HOST":"192.168.55.107", 
+        "PORT":"5432"
     }
 }
 

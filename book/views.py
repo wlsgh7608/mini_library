@@ -8,9 +8,14 @@ from rest_framework.generics import ListCreateAPIView
 
 
 
-from book.serializers import BookSerializer, ReviewSerializer
+from book.serializers import BookSerializer, ReviewSerializer,BookDetailSerializer
 # Create your views here.
 from .models import Book, Review
+from urllib.request import Request, urlopen
+from urllib.parse import urlencode, quote
+
+import json
+from datetime import datetime
 
 class BookList(APIView):
     def get(self,request):
@@ -32,7 +37,7 @@ class BookDetail(APIView):
         book = Book.objects.filter(id=book_id).exists
         if book:
             book = Book.objects.get(id=book_id)
-            serializer = BookSerializer(book)
+            serializer = BookDetailSerializer(book)
             return Response(serializer.data)
         else:
             return Response({"message":"book does not exit"},status= 404)
@@ -46,6 +51,64 @@ class BookReview(ListCreateAPIView):
 
     def post(self, request, book_id,*args, **kwargs):
         return self.create(request)
+
+
+
+class BookDataUpdate(APIView):
+    
+    
+    def get(self,request,*args,**kwargs):
+        for i in range(1,6):
+            display = 100
+            url = 'https://openapi.naver.com/v1/search/book.json?query=it&'+"display=100&"+"start="+str(i*100+1)
+            print(url)
+            request = Request(url)
+            CLIENT_ID = 'i_8pC2lDwjUX3tizVzyP'
+            CLIENT_SECRET = 'tVQDEBkV0f'
+            request.add_header('X-Naver-Client-Id', CLIENT_ID)
+            request.add_header('X-Naver-Client-Secret', CLIENT_SECRET)
+            response = urlopen(request).read().decode('utf-8')
+            # search_result = json.loads(response)
+            search_result = json.loads(response)
+            books = search_result['items']
+            for j,book in enumerate(books):
+                print(j)
+                title = book['title']
+                link = book['link']
+                image = book['image']
+                author = book['author']
+                print(book['price'])
+                price = book['price']
+                price = float(price)
+                price = int(price)
+                print(price)
+                publisher = book['publisher']
+                pubdate = book['pubdate']
+                pubdate = datetime.strptime(pubdate, '%Y%m%d')
+                isbn_list = book['isbn']
+                isbn = int(isbn_list.split(' ')[1])
+                description = book['description']
+                if Book.objects.filter(isbn = isbn):
+                    continue
+                Book.objects.create(
+                    title = title,
+                    link_url = link,
+                    image_url = image,
+                    author = author,
+                    price = price,
+                    publisher = publisher,
+                    pubdate = pubdate,
+                    isbn = isbn,
+                    description = description,
+                )
+
+
+
+
+            # return search_result
+        return 1
+
+
 
 """
 def get(self,request,book_id):

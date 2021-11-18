@@ -5,12 +5,16 @@ from user.models import  Manager,User
 
 
 class Book(models.Model):
-    title = models.CharField(max_length=50)
-    author = models.CharField(max_length=15)
-    category = models.CharField(max_length=50)
-    publish_date = models.DateField()
-    publisher = models.CharField(max_length=50)
-    
+    isbn = models.BigIntegerField(primary_key=True)
+    title = models.CharField(max_length=512)
+    price = models.IntegerField()
+
+    author = models.CharField(max_length=256)
+    link_url = models.CharField(max_length=256,default='')
+    image_url = models.CharField(max_length=256,default = '')
+    pubdate = models.DateField()
+    publisher = models.CharField(max_length=256)
+    description = models.CharField(max_length=1024)
 
 
 class Author(models.Model):
@@ -36,6 +40,7 @@ class Review(models.Model):
     title = models.CharField(max_length=50)
     rate = models.FloatField()
     date = models.DateField()
+    content = models.TextField()
     book_id = models.ForeignKey(Book,on_delete=models.CASCADE)
 
 class WriteReview(models.Model):

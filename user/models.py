@@ -1,5 +1,6 @@
 from django.db import models
-
+from django.contrib.auth.models import User
+from django.db.models.deletion import CASCADE
 # Create your models here.
 
 class Manager(models.Model):
@@ -13,6 +14,7 @@ class Manager(models.Model):
     email = models.EmailField()
 
 class User(models.Model):
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
     GENDER_CHOICES = (
         ('M','Male'),
         ('F','Female')

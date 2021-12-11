@@ -25,15 +25,20 @@ class AddBookSerializer(serializers.ModelSerializer):
         model = AddBook
         fields = '__all__'
 
-class AddBookSerializer(serializers.ModelSerializer):
+class BookMarkSerializer(serializers.ModelSerializer):
+
     class Meta:
-        model = AddBook
+        model = BookMark
         fields = '__all__'
-        
+
+
+
 class ReviewSerializer(serializers.ModelSerializer):
+    writer = serializers.ReadOnlyField()
+    date = serializers.ReadOnlyField()
     class Meta:
         model = Review
-        fields = ('writer','title','rate','date',)
+        fields = ('id','writer','title','rate','date','content')
 
 class WriteReviewSerializer(serializers.ModelSerializer):
     class Meta:

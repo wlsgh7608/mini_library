@@ -1,9 +1,10 @@
 from django.db import models
-from user.models import  Manager,User
+from users.models import  Manager
+from django.contrib.auth import get_user_model
 # Create your models here.
 
 
-
+User = get_user_model()
 class Book(models.Model):
     isbn = models.BigIntegerField(primary_key=True)
     title = models.CharField(max_length=512)
